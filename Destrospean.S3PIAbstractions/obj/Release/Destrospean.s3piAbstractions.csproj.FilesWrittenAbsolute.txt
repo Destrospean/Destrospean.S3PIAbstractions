@@ -1,6 +1,0 @@
-/home/andrew/Projects/The Sims 3 Projects/Source Code/Destrospean.s3piAbstractions/Destrospean.s3piAbstractions/obj/Release/.NETFramework,Version=v4.0.AssemblyAttribute.cs
-/home/andrew/Projects/The Sims 3 Projects/Source Code/Destrospean.s3piAbstractions/Destrospean.s3piAbstractions/bin/Release/Destrospean.s3piAbstractions.dll
-/home/andrew/Projects/The Sims 3 Projects/Source Code/Destrospean.s3piAbstractions/Destrospean.s3piAbstractions/obj/Release/Destrospean.s3piAbstractions.dll
-/home/andrew/Projects/The Sims 3 Projects/Source Code/Destrospean.s3piAbstractions/Destrospean.s3piAbstractions/bin/Release/System.Custom.dll
-/home/andrew/Projects/The Sims 3 Projects/Source Code/Destrospean.s3piAbstractions/Destrospean.s3piAbstractions/bin/Release/s3pi.Package.dll
-/home/andrew/Projects/The Sims 3 Projects/Source Code/Destrospean.s3piAbstractions/Destrospean.s3piAbstractions/bin/Release/s3pi.RCOLChunks.dll

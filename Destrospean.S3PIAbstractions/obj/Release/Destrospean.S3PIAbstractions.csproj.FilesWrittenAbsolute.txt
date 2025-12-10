@@ -1,3 +1,0 @@
-/home/andrew/Projects/The Sims 3 Projects/Source Code/Destrospean.S3PIAbstractions/Destrospean.S3PIAbstractions/bin/Release/Destrospean.S3PIAbstractions.dll
-/home/andrew/Projects/The Sims 3 Projects/Source Code/Destrospean.S3PIAbstractions/Destrospean.S3PIAbstractions/obj/Release/Destrospean.S3PIAbstractions.dll
-/home/andrew/Projects/The Sims 3 Projects/Source Code/Destrospean.S3PIAbstractions/Destrospean.S3PIAbstractions/obj/Release/.NETFramework,Version=v4.0.AssemblyAttribute.cs
