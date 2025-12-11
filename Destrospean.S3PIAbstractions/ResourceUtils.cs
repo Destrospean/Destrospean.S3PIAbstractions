@@ -87,12 +87,6 @@ namespace Destrospean.S3PIAbstractions
             public AttributeNotFoundException(string message, Exception innerException) : base(message, innerException)
             {
             }
-
-            public int ErrorCode
-            {
-                get;
-                set;
-            }
         }
 
         public struct EvaluatedResourceKey
@@ -120,12 +114,6 @@ namespace Destrospean.S3PIAbstractions
 
             public ResourceIndexEntryNotFoundException(string message, Exception innerException) : base(message, innerException)
             {
-            }
-
-            public int ErrorCode
-            {
-                get;
-                set;
             }
         }
 
