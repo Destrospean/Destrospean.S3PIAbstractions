@@ -60,10 +60,6 @@
       <HintPath>..\libs\s3pi.WrapperDealer.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="GDImageLibrary">
-      <HintPath>..\libs\GDImageLibrary.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Custom">

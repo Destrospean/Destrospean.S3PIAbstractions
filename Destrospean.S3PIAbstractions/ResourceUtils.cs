@@ -16,9 +16,7 @@ namespace Destrospean.S3PIAbstractions
 {
     public static class ResourceUtils
     {
-        static Dictionary<PackageTag, IPackage> sGameContentPackages;
-
-        static Dictionary<PackageTag, IPackage> sGameImageResourcePackages;
+        static Dictionary<PackageTag, IPackage> sGameContentPackages, sGameImageResourcePackages;
 
         static List<string> sMissingResourceKeys;
 
@@ -301,9 +299,13 @@ namespace Destrospean.S3PIAbstractions
             string tag = null;
             try
             {
-                GDImageLibrary._DDS.LoadImage(resource.AsBytes);
-                tag = "_IMG";
-                goto FinalSteps;
+                var potentialHeader = new byte[5];
+                Array.Copy(resource.AsBytes, potentialHeader, potentialHeader.Length);
+                if ("DDS |" == new string(Array.ConvertAll(potentialHeader, x => (char)x)))
+                {
+                    tag = "_IMG";
+                    goto FinalSteps;
+                }
             }
             catch
             {
@@ -364,17 +366,7 @@ namespace Destrospean.S3PIAbstractions
 
         public static string ReverseEvaluateResourceKey(this IResourceKey resourceKey)
         {   
-            var output = "key";
-            foreach (var value in new KeyValuePair<ulong, string>[]
-                {
-                    new KeyValuePair<ulong, string>(resourceKey.ResourceType, "X8"),
-                    new KeyValuePair<ulong, string>(resourceKey.ResourceGroup, "X8"),
-                    new KeyValuePair<ulong, string>(resourceKey.Instance, "X16")
-                })
-            {
-                output += ":" + value.Key.ToString(value.Value);
-            }
-            return output;
+            return "key:" + resourceKey.ResourceType.ToString("X8") + ":" + resourceKey.ResourceGroup.ToString("X8") + ":" + resourceKey.Instance.ToString("X16");
         }
     }
 }

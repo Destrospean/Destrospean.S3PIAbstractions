@@ -1,4 +1,4 @@
-﻿<Properties StartupItem="Destrospean.S3PIAbstractions/Destrospean.S3PIAbstractions.csproj">
+﻿<Properties StartupItem="Destrospean.S3PIAbstractions/Destrospean.S3PIAbstractions.csproj" GitUserInfo="UsingGIT">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
   <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
