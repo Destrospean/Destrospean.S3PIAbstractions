@@ -305,6 +305,7 @@ namespace Destrospean.S3PIAbstractions
                     tag = "_IMG";
                     goto FinalSteps;
                 }
+                stream.Position = 0;
             }
             catch
             {
@@ -348,6 +349,7 @@ namespace Destrospean.S3PIAbstractions
                     tag = "GEOM";
                     goto FinalSteps;
                 }
+                stream.Position = 0;
             }
             catch
             {
