@@ -294,14 +294,13 @@ namespace Destrospean.S3PIAbstractions
 
         public static void ResolveResourceType(this IPackage package, IResourceIndexEntry resourceIndexEntry)
         {
-            IResource castResource = null;
-            var resource = s3pi.WrapperDealer.WrapperDealer.GetResource(0, package, resourceIndexEntry);
+            var stream = ((APackage)package).GetResource(resourceIndexEntry);
             string tag = null;
             try
             {
-                var potentialHeader = new byte[5];
-                Array.Copy(resource.AsBytes, potentialHeader, potentialHeader.Length);
-                if ("DDS |" == new string(Array.ConvertAll(potentialHeader, x => (char)x)))
+                var buffer = new byte[5];
+                stream.Read(buffer, 0, buffer.Length);
+                if ("DDS |" == new string(Array.ConvertAll(buffer, x => (char)x)))
                 {
                     tag = "_IMG";
                     goto FinalSteps;
@@ -312,45 +311,65 @@ namespace Destrospean.S3PIAbstractions
             }
             try
             {
-                castResource = new CASPartResource.BlendGeometryResource(0, resource.Stream);
-                tag = "BGEO";
-                goto FinalSteps;
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    if (assembly.GetName().Name == "s3pi.CASPartResource")
+                    {
+                        Activator.CreateInstance(assembly.GetType("CASPartResource.BlendGeometryResource"), 0, stream);
+                        tag = "BGEO";
+                        goto FinalSteps;
+                    }
+                }
             }
             catch
             {
             }
             try
             {
-                castResource = new CASPartResource.CASPartResource(0, resource.Stream);
-                tag = "CASP";
-                goto FinalSteps;
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    if (assembly.GetName().Name == "s3pi.CASPartResource")
+                    {
+                        Activator.CreateInstance(assembly.GetType("CASPartResource.CASPartResource"), 0, stream);
+                        tag = "CASP";
+                        goto FinalSteps;
+                    }
+                }
             }
             catch
             {
             }
             try
             {
-                castResource = new meshExpImp.ModelBlocks.GeometryResource(0, resource.Stream);
-                tag = "GEOM";
-                goto FinalSteps;
+                var buffer = new byte[4];
+                stream.Read(buffer, 45, buffer.Length);
+                if ("GEOM" == new string(Array.ConvertAll(buffer, x => (char)x)))
+                {
+                    tag = "GEOM";
+                    goto FinalSteps;
+                }
             }
             catch
             {
             }
             try
             {
-                castResource = new TxtcResource.TxtcResource(0, resource.Stream);
-                tag = "TXTC";
-                goto FinalSteps;
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    if (assembly.GetName().Name == "s3pi.TxtcResource")
+                    {
+                        Activator.CreateInstance(assembly.GetType("TxtcResource.TxtcResource"), 0, stream);
+                        tag = "TXTC";
+                        goto FinalSteps;
+                    }
+                }
             }
             catch
             {
             }
             try
             {
-                var genericRCOLResource = new s3pi.GenericRCOLResource.GenericRCOLResource(0, resource.Stream);
-                castResource = genericRCOLResource;
-                tag = genericRCOLResource.ChunkEntries[0].RCOLBlock.Tag;
+                tag = new s3pi.GenericRCOLResource.GenericRCOLResource(0, stream).ChunkEntries[0].RCOLBlock.Tag;
                 goto FinalSteps;
             }
             catch
@@ -359,7 +378,6 @@ namespace Destrospean.S3PIAbstractions
             FinalSteps:
             if (!string.IsNullOrEmpty(tag))
             {
-                package.ReplaceResource(resourceIndexEntry, castResource ?? resource);
                 resourceIndexEntry.ResourceType = GetResourceType(tag);
             }
         }
