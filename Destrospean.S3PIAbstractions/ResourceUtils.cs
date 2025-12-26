@@ -157,14 +157,14 @@ namespace Destrospean.S3PIAbstractions
                 return Instance.CompareTo(other.Instance);
             }
 
-            public bool Equals(IResourceKey other)
-            {
-                return CompareTo(other) == 0;
-            }
-
             public bool Equals(IResourceKey a, IResourceKey b)
             {
                 return a.Equals(b);
+            }
+
+            public bool Equals(IResourceKey other)
+            {
+                return CompareTo(other) == 0;
             }
 
             public override int GetHashCode()
