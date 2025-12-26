@@ -305,7 +305,15 @@ namespace Destrospean.S3PIAbstractions
                     tag = "_IMG";
                     goto FinalSteps;
                 }
-                stream.Position = 0;
+            }
+            catch
+            {
+            }
+            try
+            {
+                new System.Xml.XmlDocument().Load(stream);
+                tag = "_XML";
+                goto FinalSteps;
             }
             catch
             {
@@ -343,13 +351,13 @@ namespace Destrospean.S3PIAbstractions
             try
             {
                 var buffer = new byte[4];
-                stream.Read(buffer, 45, buffer.Length);
+                stream.Position = 45;
+                stream.Read(buffer, 0, buffer.Length);
                 if ("GEOM" == new string(Array.ConvertAll(buffer, x => (char)x)))
                 {
                     tag = "GEOM";
                     goto FinalSteps;
                 }
-                stream.Position = 0;
             }
             catch
             {
