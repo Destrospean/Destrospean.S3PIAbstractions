@@ -179,7 +179,7 @@ namespace Destrospean.S3PIAbstractions
         }
 
         static EvaluatedResourceKey EvaluateResourceKeyInternal(this IPackage package, string key)
-        {   
+        {
             var tgi = new ulong[3];
             var i = 0;
             foreach (var hex in key.Substring(4).Split(':'))
@@ -200,10 +200,14 @@ namespace Destrospean.S3PIAbstractions
         }
 
         public static EvaluatedResourceKey EvaluateImageResourceKey(this IPackage package, string key)
-        {   
+        {
             try
             {
                 return package.EvaluateResourceKeyInternal(key);
+            }
+            catch (FormatException)
+            {
+                return EvaluateImageResourceKey(package, "key:" + GetResourceType("_IMG").ToString("X8") + ":00000000:" + System.Security.Cryptography.FNV64.GetHash(key.Substring(key.LastIndexOf("\\") + 1, key.LastIndexOf(".") - key.LastIndexOf("\\"))).ToString("X16"));
             }
             catch (ResourceIndexEntryNotFoundException)
             {
