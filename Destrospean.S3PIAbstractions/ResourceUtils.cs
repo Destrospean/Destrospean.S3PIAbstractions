@@ -14,6 +14,112 @@ namespace System.Runtime.CompilerServices
 
 namespace Destrospean.S3PIAbstractions
 {
+    public class AttributeNotFoundException : Exception
+    {
+        public AttributeNotFoundException()
+        {
+        }
+
+        public AttributeNotFoundException(string message) : base(message)
+        {
+        }
+
+        public AttributeNotFoundException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+    }
+
+    public struct EvaluatedResourceKey
+    {
+        public readonly IPackage Package;
+
+        public readonly IResourceIndexEntry ResourceIndexEntry;
+
+        public EvaluatedResourceKey(IPackage package, IResourceIndexEntry resourceIndexEntry)
+        {
+            Package = package;
+            ResourceIndexEntry = resourceIndexEntry;
+        }
+    }
+
+    public class ResourceIndexEntryNotFoundException : Exception
+    {
+        public ResourceIndexEntryNotFoundException()
+        {
+        }
+
+        public ResourceIndexEntryNotFoundException(string message) : base(message)
+        {
+        }
+
+        public ResourceIndexEntryNotFoundException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+    }
+
+    public class ResourceKey : IResourceKey
+    {
+        public ulong Instance
+        {
+            get;
+            set;
+        }
+
+        public uint ResourceGroup
+        {
+            get;
+            set;
+        }
+
+        public uint ResourceType
+        {
+            get;
+            set;
+        }
+
+        public ResourceKey(uint type, uint group, ulong instance)
+        {
+            Instance = instance;
+            ResourceGroup = group;
+            ResourceType = type;
+        }
+
+        public int CompareTo(IResourceKey other)
+        {
+            var result = ResourceType.CompareTo(other.ResourceType);
+            if (result != 0)
+            {
+                return result;
+            }
+            result = ResourceGroup.CompareTo(other.ResourceGroup);
+            if (result != 0)
+            {
+                return result;
+            }
+            return Instance.CompareTo(other.Instance);
+        }
+
+        public bool Equals(IResourceKey a, IResourceKey b)
+        {
+            return a.Equals(b);
+        }
+
+        public bool Equals(IResourceKey other)
+        {
+            return CompareTo(other) == 0;
+        }
+
+        public override int GetHashCode()
+        {
+            return ResourceType.GetHashCode() ^ ResourceGroup.GetHashCode() ^ Instance.GetHashCode();
+        }
+
+        public int GetHashCode(IResourceKey resourceKey)
+        {
+            return resourceKey.GetHashCode();
+        }
+    }
+
     public static class ResourceUtils
     {
         static Dictionary<PackageTag, IPackage> sGameContentPackages, sGameImageResourcePackages;
@@ -69,112 +175,6 @@ namespace Destrospean.S3PIAbstractions
                     sMissingResourceKeys = new List<string>();
                 }
                 return sMissingResourceKeys;
-            }
-        }
-
-        public class AttributeNotFoundException : Exception
-        {
-            public AttributeNotFoundException()
-            {
-            }
-
-            public AttributeNotFoundException(string message) : base(message)
-            {
-            }
-
-            public AttributeNotFoundException(string message, Exception innerException) : base(message, innerException)
-            {
-            }
-        }
-
-        public struct EvaluatedResourceKey
-        {
-            public readonly IPackage Package;
-
-            public readonly IResourceIndexEntry ResourceIndexEntry;
-
-            public EvaluatedResourceKey(IPackage package, IResourceIndexEntry resourceIndexEntry)
-            {
-                Package = package;
-                ResourceIndexEntry = resourceIndexEntry;
-            }
-        }
-
-        public class ResourceIndexEntryNotFoundException : Exception
-        {
-            public ResourceIndexEntryNotFoundException()
-            {
-            }
-
-            public ResourceIndexEntryNotFoundException(string message) : base(message)
-            {
-            }
-
-            public ResourceIndexEntryNotFoundException(string message, Exception innerException) : base(message, innerException)
-            {
-            }
-        }
-
-        public class ResourceKey : IResourceKey
-        {
-            public ulong Instance
-            {
-                get;
-                set;
-            }
-
-            public uint ResourceGroup
-            {
-                get;
-                set;
-            }
-
-            public uint ResourceType
-            {
-                get;
-                set;
-            }
-
-            public ResourceKey(uint type, uint group, ulong instance)
-            {
-                Instance = instance;
-                ResourceGroup = group;
-                ResourceType = type;
-            }
-
-            public int CompareTo(IResourceKey other)
-            {
-                var result = ResourceType.CompareTo(other.ResourceType);
-                if (result != 0)
-                {
-                    return result;
-                }
-                result = ResourceGroup.CompareTo(other.ResourceGroup);
-                if (result != 0)
-                {
-                    return result;
-                }
-                return Instance.CompareTo(other.Instance);
-            }
-
-            public bool Equals(IResourceKey a, IResourceKey b)
-            {
-                return a.Equals(b);
-            }
-
-            public bool Equals(IResourceKey other)
-            {
-                return CompareTo(other) == 0;
-            }
-
-            public override int GetHashCode()
-            {
-                return ResourceType.GetHashCode() ^ ResourceGroup.GetHashCode() ^ Instance.GetHashCode();
-            }
-
-            public int GetHashCode(IResourceKey resourceKey)
-            {
-                return resourceKey.GetHashCode();
             }
         }
 
